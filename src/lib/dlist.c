@@ -6,7 +6,7 @@ DLinkedList *dtal_dlist_create() {
 
 void dtal_dlist_destroy(DLinkedList *dlist) {
     LIST_FOREACH(dlist, head, next, node) {
-        if (node->prev) {
+        if (node->prev != NULL) {
             free(node->prev);
         }
     }
@@ -57,8 +57,6 @@ void dtal_dlist_push_left(DLinkedList *dlist, void *value) {
 }
 
 void *dtal_dlist_remove(DLinkedList *dlist, DLinkedListNode *node) {
-    void *value = NULL;
-
     if (node == dlist->head && node == dlist->tail) {
         dlist->head = NULL;
         dlist->tail = NULL;
@@ -74,7 +72,7 @@ void *dtal_dlist_remove(DLinkedList *dlist, DLinkedListNode *node) {
     }
 
     dlist->count--;
-    value = node->value;
+    void *value = node->value;
     free(node);
     return value;
 }

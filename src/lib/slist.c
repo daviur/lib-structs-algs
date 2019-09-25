@@ -35,13 +35,10 @@ void dtal_slist_push(SLinkedList *slist, void *value) {
     if (slist->head == NULL) {
         slist->head = node;
     } else {
-        SLinkedListNode *last;
-        LIST_FOREACH(slist, curr) {
-            last = curr;
-        }
-        last->next = node;
+        slist->tail->next = node;
     }
-    slist->tail = node;
+
+   slist->tail = node;
     slist->count++;
 }
 

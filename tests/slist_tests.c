@@ -18,6 +18,7 @@ static int teardown(void **state) {
 
 static void test_slist_push_pop(void **state) {
     int *value = malloc(sizeof(int));
+    *value = 9999;
     dtal_slist_push(slist, value);
     assert_ptr_equal(value, dtal_slist_pop(slist));
     assert_ptr_equal(NULL, slist->head);
@@ -26,6 +27,7 @@ static void test_slist_push_pop(void **state) {
 
 static void test_slist_push_left_pop_left(void **state) {
     int *value = malloc(sizeof(int));
+    *value = 9999;
     dtal_slist_push_left(slist, value);
     assert_ptr_equal(value, dtal_slist_pop_left(slist));
     assert_ptr_equal(NULL, slist->head);
@@ -34,8 +36,11 @@ static void test_slist_push_left_pop_left(void **state) {
 
 static void test_slist_multiple_push_left_pop(void **state) {
     int *value1 = malloc(sizeof(int));
+    *value1 = 1;
     int *value2 = malloc(sizeof(int));
+    *value2 = 2;
     int *value3 = malloc(sizeof(int));
+    *value3 = 3;
     dtal_slist_push_left(slist, value1);
     dtal_slist_push_left(slist, value2);
     dtal_slist_push_left(slist, value3);
@@ -46,8 +51,11 @@ static void test_slist_multiple_push_left_pop(void **state) {
 
 static void test_slist_multiple_push_pop_left(void **state) {
     int *value1 = malloc(sizeof(int));
+    *value1 = 1;
     int *value2 = malloc(sizeof(int));
+    *value2 = 2;
     int *value3 = malloc(sizeof(int));
+    *value3 = 3;
     dtal_slist_push(slist, value1);
     dtal_slist_push(slist, value2);
     dtal_slist_push(slist, value3);
@@ -58,8 +66,11 @@ static void test_slist_multiple_push_pop_left(void **state) {
 
 static void test_slist_count(void **state) {
     int *value1 = malloc(sizeof(int));
+    *value1 = 1;
     int *value2 = malloc(sizeof(int));
+    *value2 = 2;
     int *value3 = malloc(sizeof(int));
+    *value3 = 3;
     dtal_slist_push(slist, value1);
     dtal_slist_push(slist, value2);
     dtal_slist_push(slist, value3);
@@ -68,12 +79,14 @@ static void test_slist_count(void **state) {
 
 static void test_slist_head(void **state) {
     int *value = malloc(sizeof(int));
+    *value = 9999;
     dtal_slist_push_left(slist, value);
     assert_ptr_equal(value, dtal_slist_head(slist));
 }
 
 static void test_slist_tail(void **state) {
     int *value = malloc(sizeof(int));
+    *value = 9999;
     dtal_slist_push(slist, value);
     assert_ptr_equal(value, dtal_slist_tail(slist));
 }
