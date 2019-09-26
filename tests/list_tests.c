@@ -21,7 +21,11 @@ static void test_list_push_pop(void **state) {
     int *value = malloc(sizeof(int));
     *value = 9999;
     dtal_list_push(list, value);
+    assert_int_equal(1, dtal_list_count(list));
+    assert_int_equal(2, dtal_list_size(list));
     assert_ptr_equal(value, dtal_list_pop(list));
+    assert_int_equal(0, dtal_list_count(list));
+    assert_int_equal(2, dtal_list_size(list));
 }
 
 static void test_list_count_size(void **state) {
@@ -91,14 +95,24 @@ static void test_list_tail(void **state) {
     assert_ptr_equal(value, dtal_list_tail(list));
 }
 
+static void test_list_push_left_pop_left(void **state) {
+    int *value = malloc(sizeof(int));
+    *value = 9999;
+    dtal_list_push_left(list, value);
+    assert_int_equal(1, dtal_list_count(list));
+    assert_int_equal(2, dtal_list_size(list));
+    assert_ptr_equal(value, dtal_list_pop_left(list));
+    assert_int_equal(0, dtal_list_count(list));
+    assert_int_equal(2, dtal_list_size(list));
+}
+
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_list_push_pop),
+        cmocka_unit_test(test_list_push_left_pop_left),
         cmocka_unit_test(test_list_count_size),
         cmocka_unit_test(test_list_head),
         cmocka_unit_test(test_list_tail),
     };
     return cmocka_run_group_tests(tests, setup, teardown);
 }
-
-

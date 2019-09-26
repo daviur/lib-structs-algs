@@ -29,26 +29,29 @@ void dtal_list_clear_destroy(List *list) {
     dtal_list_destroy(list);
 }
 
-int is_full(List *list) {
+inline int is_full(List *list) {
     return list->count == list->size;
 }
-
-int is_quarter_full(List *list) {
-    return list->count == list->size >> 2;
- }
 
 void extend_list(List *list) {
     list->array = realloc(list->array, 2*list->size*sizeof(void *));
     list->size *= 2;
 }
 
-void dtal_list_push(List *list, void *value) {
+void dtal_list_insert(List *list, int index, void *value) {
     if (is_full(list)) {
         extend_list(list);
     }
 
-    list->array[list->count] = value;
+    for (int i = list->count; i > index; i--) {
+        list->array[i] = list->array[i - 1];
+    }
+    list->array[index] = value;
     list->count++;
+}
+
+inline int is_quarter_full(List *list) {
+    return list->count == list->size >> 2;
 }
 
 void shrink_list(List *list) {
@@ -56,12 +59,31 @@ void shrink_list(List *list) {
     list->size /= 2;
 }
 
-void *dtal_list_pop(List *list) {
+void *dtal_list_remove(List *list, int index) {
     if (is_quarter_full(list)) {
         shrink_list(list);
     }
+    void *value = list->array[index];
+    for (int i = index + 1; i < list->count; i++) {
+        list->array[i - 1] = list->array[i];
+    }
     list->count--;
-    void *value = list->array[list->count];
     list->array[list->count] = NULL;
     return value;
+}
+
+inline void dtal_list_push(List *list, void *value) {
+    dtal_list_insert(list, list->count, value);
+}
+
+inline void dtal_list_push_left(List *list, void *value) {
+    dtal_list_insert(list, 0, value);
+}
+
+inline void *dtal_list_pop(List *list) {
+    return dtal_list_remove(list, list->count-1);
+}
+
+inline void *dtal_list_pop_left(List *list) {
+    return dtal_list_remove(list, 0);
 }

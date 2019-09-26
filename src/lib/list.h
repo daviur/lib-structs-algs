@@ -21,12 +21,16 @@ void dtal_list_clear_destroy(List *list);
 #define dtal_list_tail(A) ((A->count > 0) ? (A)->array[(A)->count - 1] : NULL)
 
 void dtal_list_push(List *list, void *value);
+void dtal_list_push_left(List *list, void *value);
 void *dtal_list_pop(List *list);
+void *dtal_list_pop_left(List *list);
+void dtal_list_insert(List *list, int index, void *value);
+void *dtal_list_remove(List *list, int index);
 
-#define LIST_FOREACH(L, S, M, V) \
-    ListNode *_node = NULL;\
-    ListNode *V = NULL;\
-    for(V = _node = L->S; _node != NULL; V = _node = _node->M)
+#define LIST_FOREACH(L, C) \
+    void *C = NULL; \
+    for (int i = 0; i < L->count; i++) { \
+        C = L->array[i];
 
 #endif
 
