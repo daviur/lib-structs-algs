@@ -1,10 +1,11 @@
+#include <stdlib.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
 #include <slist.h>
 
-SLinkedList *slist;
+SLinkedList slist;
 
 static int setup(void **state) {
     slist = dtal_slist_create();
@@ -12,8 +13,14 @@ static int setup(void **state) {
 }
 
 static int teardown(void **state) {
-    dtal_slist_clear_destroy(slist);
+    dtal_slist_destroy(&slist);
     return 0;
+}
+
+static void test_slist_destroy(void **state) {
+    assert_ptr_not_equal(NULL, slist);
+    dtal_slist_destroy(&slist);
+    assert_ptr_equal(NULL, slist);
 }
 
 static void test_slist_push_pop(void **state) {
@@ -21,8 +28,8 @@ static void test_slist_push_pop(void **state) {
     *value = 9999;
     dtal_slist_push(slist, value);
     assert_ptr_equal(value, dtal_slist_pop(slist));
-    assert_ptr_equal(NULL, slist->head);
-    assert_ptr_equal(NULL, slist->tail);
+    assert_ptr_equal(NULL, dtal_slist_head(slist));
+    assert_ptr_equal(NULL, dtal_slist_tail(slist));
 }
 
 static void test_slist_push_left_pop_left(void **state) {
@@ -30,8 +37,8 @@ static void test_slist_push_left_pop_left(void **state) {
     *value = 9999;
     dtal_slist_push_left(slist, value);
     assert_ptr_equal(value, dtal_slist_pop_left(slist));
-    assert_ptr_equal(NULL, slist->head);
-    assert_ptr_equal(NULL, slist->tail);
+    assert_ptr_equal(NULL, dtal_slist_head(slist));
+    assert_ptr_equal(NULL, dtal_slist_tail(slist));
 }
 
 static void test_slist_multiple_push_left_pop(void **state) {
@@ -93,14 +100,15 @@ static void test_slist_tail(void **state) {
 
 int main() {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_slist_push_pop),
-        cmocka_unit_test(test_slist_push_left_pop_left),
-        cmocka_unit_test(test_slist_multiple_push_left_pop),
-        cmocka_unit_test(test_slist_multiple_push_pop_left),
-        cmocka_unit_test(test_slist_count),
-        cmocka_unit_test(test_slist_head),
-        cmocka_unit_test(test_slist_tail),
+        cmocka_unit_test_setup_teardown(test_slist_push_pop, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_push_left_pop_left, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_multiple_push_left_pop, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_multiple_push_pop_left, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_count, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_head, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_tail, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_slist_destroy, setup, NULL),
     };
-    return cmocka_run_group_tests(tests, setup, teardown);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

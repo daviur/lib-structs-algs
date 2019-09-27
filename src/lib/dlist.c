@@ -1,33 +1,53 @@
+#include <stdlib.h>
+
 #include "dlist.h"
 
-DLinkedList *dtal_dlist_create() {
+struct DLinkedListNode {
+    struct DLinkedListNode *next;
+    struct DLinkedListNode *prev;
+    void *value;
+};
+
+struct DLinkedList {
+    int count;
+    DLinkedListNode head;
+    DLinkedListNode tail;
+};
+
+DLinkedList dtal_dlist_create() {
     return calloc(1, sizeof(DLinkedList));
 }
 
+void dtal_dlist_clear(DLinkedList dlist) {
+    while (!dtal_dlist_is_empty(dlist)) {
+        dtal_dlist_pop(dlist);
+    }
+}
+
 void dtal_dlist_destroy(DLinkedList *dlist) {
-    LIST_FOREACH(dlist, head, next, node) {
-        if (node->prev != NULL) {
-            free(node->prev);
-        }
-    }
-
-    free(dlist->tail);
-    free(dlist);
+    dtal_dlist_clear(*dlist);
+    free(*dlist);
+    *dlist = NULL;
 }
 
-void dtal_dlist_clear(DLinkedList *dlist) {
-    LIST_FOREACH(dlist, head, next, node) {
-        free(node->value);
-    }
+inline int dtal_dlist_count(DLinkedList dlist) {
+    return dlist->count;
 }
 
-void dtal_dlist_clear_destroy(DLinkedList *dlist) {
-    dtal_dlist_clear(dlist);
-    dtal_dlist_destroy(dlist);
+inline void *dtal_dlist_head(DLinkedList dlist) {
+    return dlist->head != NULL ? (dlist)->head->value : NULL;
 }
 
-void dtal_dlist_push(DLinkedList *dlist, void *value) {
-    DLinkedListNode *node = calloc(1, sizeof(DLinkedListNode));
+inline void *dtal_dlist_tail(DLinkedList dlist) {
+    return dlist->tail != NULL ? (dlist)->tail->value : NULL;
+}
+
+inline int dtal_dlist_is_empty(DLinkedList dlist) {
+    return dlist->count == 0;
+}
+
+void dtal_dlist_push(DLinkedList dlist, void *value) {
+    DLinkedListNode node = calloc(1, sizeof(DLinkedListNode));
     node->value = value;
 
     if (dlist->head == NULL) {
@@ -41,8 +61,8 @@ void dtal_dlist_push(DLinkedList *dlist, void *value) {
     dlist->count++;
 }
 
-void dtal_dlist_push_left(DLinkedList *dlist, void *value) {
-    DLinkedListNode *node = calloc(1, sizeof(DLinkedListNode));
+void dtal_dlist_push_left(DLinkedList dlist, void *value) {
+    DLinkedListNode node = calloc(1, sizeof(DLinkedListNode));
     node->value = value;
 
     if (dlist->tail == NULL) {
@@ -56,7 +76,7 @@ void dtal_dlist_push_left(DLinkedList *dlist, void *value) {
     dlist->count++;
 }
 
-void *dtal_dlist_remove(DLinkedList *dlist, DLinkedListNode *node) {
+void *dtal_dlist_remove(DLinkedList dlist, DLinkedListNode node) {
     if (node == dlist->head && node == dlist->tail) {
         dlist->head = NULL;
         dlist->tail = NULL;
@@ -77,12 +97,12 @@ void *dtal_dlist_remove(DLinkedList *dlist, DLinkedListNode *node) {
     return value;
 }
 
-void *dtal_dlist_pop(DLinkedList *dlist) {
-    DLinkedListNode *node = dlist->tail;
+void *dtal_dlist_pop(DLinkedList dlist) {
+    DLinkedListNode node = dlist->tail;
     return node != NULL ? dtal_dlist_remove(dlist, node) : NULL;
 }
 
-void *dtal_dlist_pop_left(DLinkedList *dlist) {
-    DLinkedListNode *node = dlist->head;
+void *dtal_dlist_pop_left(DLinkedList dlist) {
+    DLinkedListNode node = dlist->head;
     return node != NULL ? dtal_dlist_remove(dlist, node) : NULL;
 }

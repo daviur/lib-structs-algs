@@ -1,11 +1,11 @@
+#include <stdlib.h>
 #include <stdarg.h>
-#include <stdio.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
 #include <list.h>
 
-List *list;
+List list;
 
 static int setup(void **state) {
     list = dtal_list_create_sized(2);
@@ -13,8 +13,14 @@ static int setup(void **state) {
 }
 
 static int teardown(void **state) {
-    dtal_list_clear_destroy(list);
+    dtal_list_destroy(&list);
     return 0;
+}
+
+static void test_list_destroy(void **state) {
+    assert_ptr_not_equal(NULL, list);
+    dtal_list_destroy(&list);
+    assert_ptr_equal(NULL, list);
 }
 
 static void test_list_push_pop(void **state) {
@@ -106,13 +112,30 @@ static void test_list_push_left_pop_left(void **state) {
     assert_int_equal(2, dtal_list_size(list));
 }
 
+static void test_list_get(void **state) {
+    int *value1 = malloc(sizeof(int));
+    *value1 = 1;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 2;
+    int *value3 = malloc(sizeof(int));
+    *value3 = 3;
+    dtal_list_push(list, value1);
+    dtal_list_push(list, value2);
+    dtal_list_push(list, value3);
+    assert_ptr_equal(value1, dtal_list_get(list, 0));
+    assert_ptr_equal(value2, dtal_list_get(list, 1));
+    assert_ptr_equal(value3, dtal_list_get(list, 2));
+}
+
 int main() {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(test_list_push_pop),
-        cmocka_unit_test(test_list_push_left_pop_left),
-        cmocka_unit_test(test_list_count_size),
-        cmocka_unit_test(test_list_head),
-        cmocka_unit_test(test_list_tail),
+        cmocka_unit_test_setup_teardown(test_list_get, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_push_pop, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_push_left_pop_left, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_count_size, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_head, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_tail, setup, teardown),
+        cmocka_unit_test_setup_teardown(test_list_destroy, setup, NULL),
     };
-    return cmocka_run_group_tests(tests, setup, teardown);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
