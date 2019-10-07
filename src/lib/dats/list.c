@@ -17,6 +17,7 @@ List dtal_list_create(void) {
 }
 
 List dtal_list_create_sized(int size) {
+    check(size >= 0, "List size must be <= 0");
     List list = STRUCT_CALLOC(List);
     check_mem(list);
     list->array = calloc(size, sizeof(void *));
@@ -100,7 +101,7 @@ int extend_list(List list) {
 
 int dtal_list_insert(List list, int index, void *value) {
     check(list != NULL, "Invalid List");
-    check(0 <= index && index <= list->count, "Index must be 0 <= index <= count");
+    check(0 <= index && index <= list->count, "List index must be 0 <= index <= count");
     if (is_full(list)) {
         extend_list(list);
     }
@@ -128,7 +129,7 @@ error:
 
 void *dtal_list_remove(List list, int index) {
     check(list != NULL, "Invalid List");
-    check(0 <= index && index <= list->count, "Index must be 0 <= index <= count");
+    check(0 <= index && index <= list->count, "List index must be 0 <= index <= count");
     if (is_quarter_full(list)) {
         shrink_list(list);
     }
