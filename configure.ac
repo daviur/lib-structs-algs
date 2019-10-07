@@ -6,7 +6,7 @@ define([VERSION_BUG_FIX], [0])
 define([BUG_REPORT], [david.urbina@acm.org])
 
 AC_INIT([NAME], [VERSION_MAJOR.VERSION_MINOR.VERSION_BUG_FIX], [BUG_REPORT], [TARNAME])
-AC_CONFIG_SRCDIR([src/lib/list.c])
+AC_CONFIG_SRCDIR([src/lib/dats/list.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_AUX_DIR([autotools])

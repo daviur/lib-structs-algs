@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "helper.h"
 #include "dict.h"
 #include "dlist.h"
 
@@ -16,7 +17,7 @@ Dict dtal_dict_create() {
 }
 
 Dict dtal_dict_create_sized(int size) {
-    Dict dict = calloc(1, sizeof(Dict));
+    Dict dict = SCALLOC(Dict);
     dict->array = calloc(size, sizeof(DLinkedList));
     dict->size = size;
 

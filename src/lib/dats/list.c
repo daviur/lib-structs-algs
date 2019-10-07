@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "helper.h"
 #include "list.h"
 
 #define SIZE 16
@@ -15,7 +16,7 @@ List dtal_list_create(void) {
 }
 
 List dtal_list_create_sized(int size) {
-    List list = calloc(1, sizeof(List));
+    List list = SCALLOC(List);
     list->array = calloc(size, sizeof(void *));
     list->size = size;
     return list;

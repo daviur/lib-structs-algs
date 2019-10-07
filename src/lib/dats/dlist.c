@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "helper.h"
 #include "dlist.h"
 
 struct DLinkedListNode {
@@ -15,7 +16,7 @@ struct DLinkedList {
 };
 
 DLinkedList dtal_dlist_create() {
-    return calloc(1, sizeof(DLinkedList));
+    return SCALLOC(DLinkedList);
 }
 
 void dtal_dlist_clear(DLinkedList dlist) {
@@ -47,7 +48,7 @@ inline int dtal_dlist_is_empty(DLinkedList dlist) {
 }
 
 void dtal_dlist_push(DLinkedList dlist, void *value) {
-    DLinkedListNode node = calloc(1, sizeof(DLinkedListNode));
+    DLinkedListNode node = SCALLOC(DLinkedListNode);
     node->value = value;
 
     if (dlist->head == NULL) {
@@ -62,7 +63,7 @@ void dtal_dlist_push(DLinkedList dlist, void *value) {
 }
 
 void dtal_dlist_push_left(DLinkedList dlist, void *value) {
-    DLinkedListNode node = calloc(1, sizeof(DLinkedListNode));
+    DLinkedListNode node = SCALLOC(DLinkedListNode);
     node->value = value;
 
     if (dlist->tail == NULL) {
