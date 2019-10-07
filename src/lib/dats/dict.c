@@ -17,8 +17,8 @@ Dict dtal_dict_create() {
 }
 
 Dict dtal_dict_create_sized(int size) {
-    Dict dict = SCALLOC(Dict);
-    dict->array = calloc(size, sizeof(DLinkedList));
+    Dict dict = STRUCT_CALLOC(Dict);
+    dict->array = ARRAY_CALLOC(size, DLinkedList);
     dict->size = size;
 
     for (int i = 0; i < size; i++) {

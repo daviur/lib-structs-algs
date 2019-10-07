@@ -3,20 +3,20 @@
 #include "helper.h"
 #include "dlist.h"
 
-struct DLinkedListNode {
-    struct DLinkedListNode *next;
-    struct DLinkedListNode *prev;
-    void *value;
-};
-
 struct DLinkedList {
     int count;
     DLinkedListNode head;
     DLinkedListNode tail;
 };
 
+struct DLinkedListNode {
+    struct DLinkedListNode *next;
+    struct DLinkedListNode *prev;
+    void *value;
+};
+
 DLinkedList dtal_dlist_create() {
-    return SCALLOC(DLinkedList);
+    return STRUCT_CALLOC(DLinkedList);
 }
 
 void dtal_dlist_clear(DLinkedList dlist) {
@@ -48,7 +48,7 @@ inline int dtal_dlist_is_empty(DLinkedList dlist) {
 }
 
 void dtal_dlist_push(DLinkedList dlist, void *value) {
-    DLinkedListNode node = SCALLOC(DLinkedListNode);
+    DLinkedListNode node = STRUCT_CALLOC(DLinkedListNode);
     node->value = value;
 
     if (dlist->head == NULL) {
@@ -63,7 +63,7 @@ void dtal_dlist_push(DLinkedList dlist, void *value) {
 }
 
 void dtal_dlist_push_left(DLinkedList dlist, void *value) {
-    DLinkedListNode node = SCALLOC(DLinkedListNode);
+    DLinkedListNode node = STRUCT_CALLOC(DLinkedListNode);
     node->value = value;
 
     if (dlist->tail == NULL) {

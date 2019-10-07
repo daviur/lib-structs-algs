@@ -15,7 +15,7 @@ struct SLinkedList {
 };
 
 SLinkedList dtal_slist_create() {
-    return SCALLOC(SLinkedList);
+    return STRUCT_CALLOC(SLinkedList);
 }
 
 void dtal_slist_clear(SLinkedList slist) {
@@ -47,7 +47,7 @@ inline int dtal_slist_is_empty(SLinkedList slist) {
 }
 
 void dtal_slist_push(SLinkedList slist, void *value) {
-    SLinkedListNode node = SCALLOC(SLinkedListNode);
+    SLinkedListNode node = STRUCT_CALLOC(SLinkedListNode);
     node->value = value;
 
     if (slist->head == NULL) {
@@ -61,7 +61,7 @@ void dtal_slist_push(SLinkedList slist, void *value) {
 }
 
 void dtal_slist_push_left(SLinkedList slist, void *value) {
-    SLinkedListNode node = SCALLOC(SLinkedListNode);
+    SLinkedListNode node = STRUCT_CALLOC(SLinkedListNode);
     node->value = value;
 
     if (slist->tail == NULL) {

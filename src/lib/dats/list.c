@@ -16,7 +16,7 @@ List dtal_list_create(void) {
 }
 
 List dtal_list_create_sized(int size) {
-    List list = SCALLOC(List);
+    List list = STRUCT_CALLOC(List);
     list->array = calloc(size, sizeof(void *));
     list->size = size;
     return list;

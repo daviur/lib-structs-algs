@@ -2,7 +2,6 @@
 #define dtal_slist_h
 
 typedef struct SLinkedListNode * SLinkedListNode;
-
 typedef struct SLinkedList * SLinkedList;
 
 SLinkedList dtal_slist_create();
